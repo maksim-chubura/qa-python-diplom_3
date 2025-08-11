@@ -1,18 +1,5 @@
-import pytest
 import allure
-from pages.main_page import MainPage
-from pages.order_feed_page import OrderFeed
-from pages.login_page import LoginPage
-from helpers import *
-
-class BaseTest:
-
-    @pytest.fixture(autouse=True)
-    def setup(self, driver):
-        self.main_page = MainPage(driver)
-        self.order_feed = OrderFeed(driver)
-        self.login_page = LoginPage(driver)
-        yield
+from conftest import BaseTest
 
 @allure.feature("Проверка основного функционала")
 class TestMainPage(BaseTest):
@@ -53,11 +40,6 @@ class TestMainPage(BaseTest):
 
     @allure.title("Создание заказа")
     def test_create_order(self):
-        self.main_page.click_login_button()
-        self.login_page.fill_email(EMAIL)
-        self.login_page.fill_password(PASSWORD)
-        self.login_page.click_enter_button()
-        self.main_page.is_main_page()
         self.main_page.create_order()
         self.main_page.make_order()
         assert self.main_page.is_order_accepted(), "Не удалось оформить заказ"

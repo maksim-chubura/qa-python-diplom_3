@@ -1,29 +1,23 @@
-import pytest
 import allure
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
-from pages.forgot_password_page import ForgotPasswordPage
+from conftest import BaseTest
 from helpers import *
 
-class BaseTest:  
-
-    @pytest.fixture(autouse=True)
-    def setup(self, driver):
-        self.main_page = MainPage(driver)
-        self.login_page = LoginPage(driver)
-        self.forgot_password = ForgotPasswordPage(driver)
 
 @allure.feature("Восстановление пароля")
 class TestForgotPassword(BaseTest):
     @allure.title("Переход на страницу восстановления пароля по кнопке «Восстановить пароль»")
     def test_go_to_forgot_password_page(self):
-        self.main_page.click_login_button()
+        self.main_page.click_profile_button()
+        self.profile_page.click_logout_button()
+        self.profile_page.wait_load_page()
         self.login_page.click_recover_password_link()
         assert self.forgot_password.is_forgot_password_page(), "Не удалось перейти на страницу восстановления пароля"
 
     @allure.title("Ввод почты и клик по кнопке «Восстановить»")
     def test_enter_email_and_click_recover_button(self):
-        self.main_page.click_login_button()
+        self.main_page.click_profile_button()
+        self.profile_page.click_logout_button()
+        self.profile_page.wait_load_page()
         self.login_page.click_recover_password_link()
         self.forgot_password.fill_email(EMAIL)
         self.forgot_password.click_recover_button()
@@ -32,7 +26,9 @@ class TestForgotPassword(BaseTest):
 
     @allure.title("Клик по кнопке показать/скрыть пароль делает поле активным — подсвечивает его")
     def test_show_hide_password(self):
-        self.main_page.click_login_button()
+        self.main_page.click_profile_button()
+        self.profile_page.click_logout_button()
+        self.profile_page.wait_load_page()
         self.login_page.fill_email(EMAIL)
         self.login_page.fill_password(PASSWORD)
         self.login_page.click_show_hide_password()

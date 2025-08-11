@@ -1,25 +1,5 @@
-import pytest
 import allure
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
-from pages.profile_page import ProfilePage
-from pages.order_feed_page import OrderFeed
-from helpers import *
-
-class BaseTest: 
-
-    @pytest.fixture(autouse=True)
-    def setup(self, driver):
-        self.main_page = MainPage(driver)
-        self.login_page = LoginPage(driver)
-        self.profile_page = ProfilePage(driver)
-        self.order_feed = OrderFeed(driver)
-
-        self.main_page.click_login_button()
-        self.login_page.fill_email(EMAIL)
-        self.login_page.fill_password(PASSWORD)
-        self.login_page.click_enter_button()
-        assert self.main_page.is_main_page(), "Не удалось войти в аккаунт"
+from conftest import BaseTest
 
 @allure.feature("Личный кабинет")
 class TestProfile(BaseTest):
